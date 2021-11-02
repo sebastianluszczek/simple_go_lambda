@@ -4,7 +4,7 @@ provider "aws" {
 
 variable "app_name" {
   description = "Application name"
-  default     = "simple-lambda"
+  default     = "lambda_example"
 }
 
 variable "app_env" {

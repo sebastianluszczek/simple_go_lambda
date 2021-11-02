@@ -1,10 +1,12 @@
 resource "aws_lambda_function" "lambda_func" {
   filename         = data.archive_file.lambda_zip.output_path
-  function_name    = var.app_name
+  function_name    = "${var.app_name}-test"
   handler          = "app"
   source_code_hash = base64sha256(data.archive_file.lambda_zip.output_path)
   runtime          = "go1.x"
   role             = aws_iam_role.lambda_exec.arn
+
+  publish = true
 }
 
 # Assume role setup

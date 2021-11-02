@@ -5,7 +5,7 @@ init:
 	terraform init -backend-config=config/config.remote
 
 plan:
-	terraform plan infra
+	terraform plan
 
 apply:
 	terraform apply --auto-approve infra
