@@ -16,7 +16,7 @@ type timeEvent struct {
 }
 
 func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	t := timeEvent{Time: time.Now().String(), Message: "Hello World"}
+	t := timeEvent{Time: time.Now().String(), Message: "Hello World!"}
 	b, err := json.Marshal(t)
 	if err != nil {
 		return events.APIGatewayProxyResponse{}, err
