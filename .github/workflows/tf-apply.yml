@@ -11,9 +11,9 @@ env:
   GO_VERSION: 1.15.8
 
 jobs:
-  terrafor:
+  setup:
     runs-on: ubuntu-latest
-    name: Create terraform plan
+    name: Setup environment & build app
 
     steps:
       - name: Checkout
@@ -24,6 +24,9 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
 
+      - name: Build app
+        run: make build
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -31,12 +34,23 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.REGION }}
 
+  terrafor:
+    runs-on: ubuntu-latest
+    name: Create terraform plan
+    needs:
+      - setup
+
+    steps:
       - name: Terraform Init
         run: terraform init -backend-config=config/config.remote
         working-directory: terraform
 
       - name: Terraform Validate
         run: terraform validate
+        working-directory: terraform
+
+      - name: Terraform Plan
+        run: terraform plan
         working-directory: terraform
 
       - name: Terraform Plan
