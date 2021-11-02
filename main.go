@@ -1,9 +1,9 @@
 package main
 
 import (
-	"context"
-	"fmt"
+	"log"
 
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
@@ -12,11 +12,12 @@ type Event struct {
 	Echo string `json:echo`
 }
 
-func Handler(ctx context.Context, event Event) (string, error) {
-	if event.ShouldFail {
-		return "", fmt.Errorf("Failed to handle %#v", event)
-	}
-	return event.Echo, nil
+func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	log.Printf("Processing Lambda request %t\n", request.RequestContext)
+	return events.APIGatewayProxyResponse{
+		Body:       "Hello world",
+		StatusCode: 200,
+	}, nil
 }
 
 func main() {
