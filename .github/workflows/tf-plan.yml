@@ -14,9 +14,9 @@ env:
   GO_VERSION: 1.15.8
 
 jobs:
-  terrafor:
+  plan:
     runs-on: ubuntu-latest
-    name: Create terraform plan
+    name: Terraform plan
 
     steps:
       - name: Checkout
@@ -26,6 +26,9 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: ${{ env.GO_VERSION }}
+
+      - name: Build app
+        run: make build
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
