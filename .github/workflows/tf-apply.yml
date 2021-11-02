@@ -3,7 +3,7 @@ name: terraform-apply
 on:
   pull_request:
     branches:
-      - main
+      - master
 
 env:
   TF_VERSION: 1.0.2
