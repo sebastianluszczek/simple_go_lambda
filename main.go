@@ -1,22 +1,28 @@
 package main
 
 import (
-	"log"
+	"context"
+	"encoding/json"
+	"net/http"
+	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-type Event struct {
-	ShouldFail bool `json:shouldFail`
-	Echo string `json:echo`
+type timeEvent struct {
+	Time string `json:"time"`
 }
 
-func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	log.Printf("Processing Lambda request %t\n", request.RequestContext)
+func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	t := timeEvent{Time: time.Now().String()}
+	b, err := json.Marshal(t)
+	if err != nil {
+		return events.APIGatewayProxyResponse{}, err
+	}
 	return events.APIGatewayProxyResponse{
-		Body:       "Hello world",
-		StatusCode: 200,
+		StatusCode: http.StatusOK,
+		Body:       string(b),
 	}, nil
 }
 
